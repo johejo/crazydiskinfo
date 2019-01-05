@@ -1,0 +1,28 @@
+name: crazydiskinfo
+version: '1.0.2'
+summary: CrazyDiskInfo is an interactive TUI S.M.A.R.T viewer for Unix systems.
+description: |
+  CrazyDiskInfo is an interactive TUI S.M.A.R.T viewer for Unix systems.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+parts:
+  crazydiskinfo:
+    plugin: cmake
+    source: .
+    override-build: |
+      cd ../src/
+      mkdir -p build
+      cd build/
+      cmake -DCMAKE_INSTALL_PREFIX=$SNAPCRAFT_PART_INSTALL/bin ..
+      make
+      make install
+    build-packages:
+      - libatasmart-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+
+apps:
+  crazydiskinfo:
+    command: bin/crazy
